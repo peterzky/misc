@@ -1,0 +1,10 @@
+#+TITLE:Scripts For My Desktop Environment
+
+* Include Script
+- go-mpv: play youtube via commandline with mpv and youtube-dl
+- org-pomodoro: xmobar extension to show current org todo entry with pomodoro format
+- iem: xmobar input method indicator
+* Installation
+#+BEGIN_SRC bash
+go get -u github.com/peterzky/misc/...
+#+END_SRC
