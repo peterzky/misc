@@ -84,7 +84,7 @@ func audio(c chan string) {
 	for {
 		switch <-c {
 		case "start":
-			play("start2")
+			play("start3")
 		case "end":
 			play("end")
 		case "30":
