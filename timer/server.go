@@ -16,7 +16,6 @@ func SocketServer(port int, c chan string, q chan bool) {
 	if err != nil {
 		panic(err)
 	}
-	// log.Printf("server start at :%d", port)
 
 	for {
 		conn, err := listen.Accept()
@@ -41,9 +40,9 @@ func handler(conn net.Conn, s chan string, q chan bool) {
 func digit(i int) string {
 	switch {
 	case i < 10:
-		return "0" + strconv.Itoa(i)
+		return fmt.Sprintf("<fc=#e9d460>%s</fc>", "0"+strconv.Itoa(i))
 	default:
-		return strconv.Itoa(i)
+		return fmt.Sprintf("<fc=#87d37c>%s</fc>", strconv.Itoa(i))
 	}
 }
 
@@ -53,13 +52,21 @@ func formatTime(i int) string {
 	return fmt.Sprintf("<fc=#d64541>TIMER</fc> [%s:%s]\n", min, sec)
 }
 
-func timer(t int, c chan string, q, done chan bool) {
+func timer(t int, c, p chan string, q, done chan bool) {
 	tick := time.Tick(time.Second)
 Loop:
 	for {
-		if t <= 0 {
+		if t <= -1 {
+			p <- "end"
 			done <- true
 			break Loop
+		}
+		if t == 30 {
+			select {
+			case p <- "30":
+			default:
+			}
+
 		}
 		select {
 		case <-q:
@@ -73,15 +80,29 @@ Loop:
 
 }
 
+func audio(c chan string) {
+	for {
+		switch <-c {
+		case "start":
+			play("start2")
+		case "end":
+			play("end")
+		case "30":
+			play("count_down_30")
+		}
+	}
+}
+
 func main() {
-	go play("start")
 	t, _ := strconv.Atoi(os.Args[1])
+	p := make(chan string)
 	c := make(chan string)
 	q := make(chan bool)
 	done := make(chan bool)
 	go SocketServer(3333, c, q)
-	go timer(60*t, c, q, done)
-	// go printer(c, q)
+	go timer(60*t, c, p, q, done)
+	go audio(p)
+	p <- "start"
 	<-done
 
 }
