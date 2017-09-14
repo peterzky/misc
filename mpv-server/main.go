@@ -28,6 +28,7 @@ func play(w http.ResponseWriter, r *http.Request) {
 	uri := re.Replace(r.RequestURI)
 	decodedUrl, _ := url.QueryUnescape(uri)
 	fmt.Printf("playing %s\n", decodedUrl)
+	fmt.Fprintf(w, "playing %s\n", decodedUrl)
 	mpv(decodedUrl, true)
 }
 
