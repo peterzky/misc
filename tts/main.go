@@ -5,20 +5,14 @@ import (
 
 	"sync"
 
-	"fmt"
-
 	"github.com/peterzky/misc/tts/say"
 )
 
 func main() {
 
-	xsel := exec.Command("xsel", "-b")
+	xsel := exec.Command("xsel", "-o")
 	text, _ := xsel.Output()
-	voiceParts := say.Split(string(text), 200)
-	for _, vp := range voiceParts {
-		fmt.Printf("%d:\n%s\n", vp.Index, vp.Message)
-		fmt.Println("----------------")
-	}
+	voiceParts := say.Split(string(text), 150)
 	var wg sync.WaitGroup
 
 	for _, vp := range voiceParts {
