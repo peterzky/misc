@@ -1,6 +1,7 @@
 package say
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -25,6 +26,10 @@ func (b ByIndex) Less(i, j int) bool {
 	return b[i].Index < b[j].Index
 }
 
+func getName(k int) string {
+	return fmt.Sprintf("/tmp/tts_%d.mp3", k)
+}
+
 func Split(longStr string, length int) []VoicePart {
 	var list []VoicePart
 	words := strings.Split(longStr, " ")
@@ -32,21 +37,18 @@ func Split(longStr string, length int) []VoicePart {
 	for i := 0; i < len(words); i += length {
 		if len(words) < length {
 			str := longStr
-			filename := "/tmp/" + string(k) + ".mp3"
-			list = append(list, VoicePart{str, filename, k})
+			list = append(list, VoicePart{str, getName(k), k})
 		}
 
 		if i%length == 0 && i != 0 {
 			str := strings.Join(words[i-length:i], " ")
-			filename := "/tmp/" + string(k) + ".mp3"
-			list = append(list, VoicePart{str, filename, k})
+			list = append(list, VoicePart{str, getName(k), k})
 			k++
 
 		}
 		if len(words)-i < length && i != 0 {
 			str := strings.Join(words[i:], " ")
-			filename := "/tmp/" + string(k) + ".mp3"
-			list = append(list, VoicePart{str, filename, k})
+			list = append(list, VoicePart{str, getName(k), k})
 
 		}
 	}
