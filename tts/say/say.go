@@ -12,7 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/polly"
 )
 
-func Say(text string) {
+func Download(vp VoicePart) {
 	sess, err := session.NewSession(&aws.Config{Region: aws.String("ap-northeast-1")})
 
 	svc := polly.New(sess)
@@ -20,7 +20,7 @@ func Say(text string) {
 		LexiconNames: []*string{},
 		OutputFormat: aws.String("mp3"),
 		SampleRate:   aws.String("8000"),
-		Text:         aws.String(text),
+		Text:         aws.String(vp.Message),
 		TextType:     aws.String("text"),
 		VoiceId:      aws.String("Joanna"),
 	}
@@ -49,16 +49,17 @@ func Say(text string) {
 		} else {
 			fmt.Println(err.Error())
 		}
-		return
 	}
 
-	file, _ := os.Create("/tmp/voice.mp3")
+	file, _ := os.Create(vp.FileName)
 	defer file.Close()
 
 	io.Copy(file, result.AudioStream)
 
-	voiceAudio := exec.Command("mpv", "/tmp/voice.mp3")
-	voiceAudio.Start()
-	voiceAudio.Wait()
+}
 
+func Play(vp VoicePart) {
+	audio := exec.Command("mpv", vp.FileName)
+	audio.Start()
+	audio.Wait()
 }
