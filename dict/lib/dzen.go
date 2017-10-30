@@ -44,3 +44,15 @@ func DzenAtCursor(msg, width string) {
 	x, y := Cursor()
 	Dzen(msg, x, y, width)
 }
+
+func DoubleClick() {
+	action := exec.Command("xdotool", "click", "--repeat", "2", "1")
+	action.Start()
+	action.Wait()
+}
+
+func MidleClick() {
+	action := exec.Command("xdotool", "click", "2")
+	action.Start()
+	action.Wait()
+}

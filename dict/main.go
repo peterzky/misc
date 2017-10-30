@@ -9,6 +9,8 @@ import (
 	"os"
 	"strings"
 
+	"time"
+
 	"github.com/peterzky/misc/dict/lib"
 )
 
@@ -33,7 +35,8 @@ func main() {
 	}
 
 	if sel {
-
+		lib.DoubleClick()
+		time.Sleep(time.Millisecond)
 		xsel := exec.Command("xsel", "-o")
 		out, err := xsel.Output()
 		text := string(out)
@@ -45,6 +48,8 @@ func main() {
 		}
 
 		r, err := c.Query(text)
+		lib.MidleClick()
+
 		if err != nil {
 			lib.DzenAtCursor(err.Error(), width)
 		}
