@@ -4,6 +4,15 @@
 - go-mpv: play youtube via commandline with mpv and youtube-dl
 - org-pomodoro: xmobar extension to show current org todo entry with pomodoro format
 - iem: xmobar input method indicator
+- timer: a simple timer implementation
+- tts: amazon polly client use with xmonad
+  - dependencies
+    - xsel
+- dict: popup dictionary
+  - dependencies
+    - xsel
+    - dzen2
+    - xdotool
 * Installation
 #+BEGIN_SRC bash
 go get -u github.com/peterzky/misc/...
