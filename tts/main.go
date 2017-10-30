@@ -8,22 +8,36 @@ import (
 
 	"flag"
 
+	"io/ioutil"
+	"os"
+
 	"github.com/peterzky/misc/tts/say"
 )
 
-var clip, selec, debug bool
+var clip, selec, pipe, debug bool
 var input string
+var word int
 
 func init() {
 	flag.BoolVar(&clip, "clip", false, "send clipboard")
+	flag.BoolVar(&pipe, "p", false, "use stdin as input")
 	flag.BoolVar(&selec, "sel", false, "send selection")
 	flag.BoolVar(&debug, "debug", false, "debug output")
 	flag.StringVar(&input, "t", "", "send text")
+	flag.IntVar(&word, "w", 150, "word per session")
 }
 
 func main() {
 	flag.Parse()
 	var text string
+	if pipe {
+		b, err := ioutil.ReadAll(os.Stdin)
+		if err != nil {
+			panic(err)
+		}
+		text = string(b)
+
+	}
 
 	if clip {
 		xsel := exec.Command("xsel", "-o")
@@ -47,7 +61,7 @@ func main() {
 		text = input
 	}
 
-	voiceParts := say.Split(text, 150)
+	voiceParts := say.Split(text, word)
 	if debug {
 		for _, v := range voiceParts {
 			fmt.Printf("Index: %d\nMessage: %s\nFileName: %s\n", v.Index, v.Message, v.FileName)
