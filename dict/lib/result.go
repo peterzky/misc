@@ -27,9 +27,24 @@ type Result struct {
 	Web         *[]*webField `json:"web"`
 }
 
+func formatWeb(list []*webField) string {
+	var str string
+	for _, wf := range list {
+
+		s := fmt.Sprintf("%s\n%s\n", wf.Key, strings.Join(wf.Value, " "))
+		str += s
+	}
+	return str
+}
+
 func (r *Result) Format() string {
-	return fmt.Sprintf("%s\n%s\n%s",
-		r.Query, r.Basic.Phonetic,
-		strings.Join(r.Basic.Explains, "\n"),
-	)
+	if r.Basic == nil {
+		return "Sorry\n No result"
+	} else {
+		return fmt.Sprintf("%s\n%s\n--------------------\n%s",
+			r.Query,
+			strings.Join(r.Basic.Explains, "\n"),
+			formatWeb(*r.Web),
+		)
+	}
 }

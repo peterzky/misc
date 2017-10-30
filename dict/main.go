@@ -28,7 +28,10 @@ func main() {
 		panic("no input")
 	}
 
-	r, _ := c.Query(text)
+	r, err := c.Query(text)
+	if err != nil {
+		lib.DzenAtCursor(err.Error())
+	}
 	str := r.Format()
 	fmt.Println(str)
 

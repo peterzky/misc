@@ -6,10 +6,15 @@ import (
 	"strings"
 )
 
-func Dzen(str, x, y, time string) {
+func Dzen(str, x, y string) {
 	echo := exec.Command("echo", str)
-	dzen := exec.Command("dzen2", "-h", "200", "-w", "200", "-x", x, "-y", y, "-p", time,
-		"-fn", "WenQuanYi Micro Hei", "-e", "button1=exit", "-l", "4")
+	dzen := exec.Command("dzen2", "-w", "300", "-x", x, "-y", y, "-p", "6",
+		"-fn", "WenQuanYi Micro Hei", "-l", "6",
+		"-e", "onstart=uncollapse,scrollhome;"+
+			"button1=exit;"+
+			"button3=exit;"+
+			"button5=scrolldown:1;"+
+			"button4=scrollup:1")
 	r, w := io.Pipe()
 	echo.Stdout = w
 	dzen.Stdin = r
@@ -37,5 +42,5 @@ func Cursor() (string, string) {
 
 func DzenAtCursor(msg string) {
 	x, y := Cursor()
-	Dzen(msg, x, y, "5")
+	Dzen(msg, x, y)
 }
