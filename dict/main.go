@@ -54,7 +54,6 @@ func main() {
 		lib.DzenAtCursor(str, width)
 	} else {
 		text := strings.Join(os.Args[1:], "")
-		fmt.Println(text)
 		r, err := c.Query(text)
 		if err != nil {
 			panic(err)
