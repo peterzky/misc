@@ -6,9 +6,9 @@ import (
 	"strings"
 )
 
-func Dzen(str, x, y string) {
+func Dzen(str, x, y, width string) {
 	echo := exec.Command("echo", str)
-	dzen := exec.Command("dzen2", "-w", "300", "-x", x, "-y", y, "-p", "6",
+	dzen := exec.Command("dzen2", "-w", width, "-x", x, "-y", y, "-p", "6",
 		"-fn", "WenQuanYi Micro Hei", "-l", "6",
 		"-e", "onstart=uncollapse,scrollhome;"+
 			"button1=exit;"+
@@ -40,7 +40,7 @@ func Cursor() (string, string) {
 
 }
 
-func DzenAtCursor(msg string) {
+func DzenAtCursor(msg, width string) {
 	x, y := Cursor()
-	Dzen(msg, x, y)
+	Dzen(msg, x, y, width)
 }

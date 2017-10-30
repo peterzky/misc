@@ -4,6 +4,11 @@ import (
 	"fmt"
 	"os/exec"
 
+	"flag"
+
+	"os"
+	"strings"
+
 	"github.com/peterzky/misc/dict/lib"
 )
 
@@ -12,28 +17,49 @@ const (
 	APPSECRET = "CQFItxl9hPXuQuVcQa5F2iPmZSbN0hYS"
 )
 
+var sel bool
+var width string
+
+func init() {
+	flag.BoolVar(&sel, "s", false, "whither using commandline input")
+	flag.StringVar(&width, "w", "300", "width of popup")
+}
+
 func main() {
+	flag.Parse()
 	c := &lib.Client{
 		AppID:     APPID,
 		AppSecret: APPSECRET,
 	}
 
-	xsel := exec.Command("xsel", "-o")
-	out, err := xsel.Output()
-	text := string(out)
-	if err != nil {
-		panic(err)
-	}
-	if text == "" {
-		panic("no input")
-	}
+	if sel {
 
-	r, err := c.Query(text)
-	if err != nil {
-		lib.DzenAtCursor(err.Error())
-	}
-	str := r.Format()
-	fmt.Println(str)
+		xsel := exec.Command("xsel", "-o")
+		out, err := xsel.Output()
+		text := string(out)
+		if err != nil {
+			panic(err)
+		}
+		if text == "" {
+			panic("no input")
+		}
 
-	lib.DzenAtCursor(str)
+		r, err := c.Query(text)
+		if err != nil {
+			lib.DzenAtCursor(err.Error(), width)
+		}
+		str := r.Format()
+		fmt.Println(str)
+
+		lib.DzenAtCursor(str, width)
+	} else {
+		text := strings.Join(os.Args[1:], "")
+		fmt.Println(text)
+		r, err := c.Query(text)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(r.Format())
+
+	}
 }
