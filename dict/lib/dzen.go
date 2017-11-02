@@ -47,12 +47,10 @@ func DzenAtCursor(msg, width string) {
 
 func DoubleClick() {
 	action := exec.Command("xdotool", "click", "--repeat", "2", "1")
-	action.Start()
-	action.Wait()
+	action.Run()
 }
 
 func MidleClick() {
 	action := exec.Command("xdotool", "click", "2")
-	action.Start()
-	action.Wait()
+	action.Run()
 }

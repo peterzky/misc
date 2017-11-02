@@ -48,7 +48,10 @@ func main() {
 		}
 
 		r, err := c.Query(text)
+
 		lib.MidleClick()
+		clear := exec.Command("xsel", "-c")
+		clear.Run()
 
 		if err != nil {
 			lib.DzenAtCursor(err.Error(), width)
