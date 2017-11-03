@@ -40,7 +40,7 @@ func main() {
 	}
 
 	if clip {
-		xsel := exec.Command("xsel", "-o")
+		xsel := exec.Command("xsel", "-b")
 		out, err := xsel.Output()
 		text = string(out)
 		if err != nil {
