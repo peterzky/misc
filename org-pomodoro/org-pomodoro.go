@@ -82,7 +82,9 @@ func main() {
 		t := stateDispatcher(state, timer)
 		l := colorize("#D3B53D", title)
 		icon := "%{F#C0392B}%{F-}"
-		fmt.Printf("%s [%s] %s", icon, t, l)
+		bracketl := "%{F#444}[%{F-}"
+		bracketr := "%{F#444}]%{F-}"
+		fmt.Printf("%s %s%s%s %s", icon, bracketl, t, bracketr, l)
 	} else {
 		fmt.Println("")
 	}
