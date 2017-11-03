@@ -46,7 +46,7 @@ func getTime() string {
 }
 
 func colorize(color string, target string) string {
-	str := "<fc=" + color + ">" + target + "</fc>"
+	str := "%{F" + color + "}" + target + "%{F-}"
 	return str
 }
 
@@ -59,13 +59,13 @@ func getState() string {
 func stateDispatcher(state string, timer string) (output string) {
 	switch state {
 	case ":pomodoro":
-		output = colorize("red", timer)
+		output = colorize("#90C695", timer)
 		return
 	case ":short-break":
-		output = colorize("cyan", timer)
+		output = colorize("#90C695", timer)
 		return
 	case ":long-break":
-		output = colorize("blue", timer)
+		output = colorize("#52B3D9", timer)
 		return
 	default:
 		output = ""
@@ -81,7 +81,8 @@ func main() {
 		state := getState()
 		t := stateDispatcher(state, timer)
 		l := colorize("#D3B53D", title)
-		fmt.Printf("[%s] %s", t, l)
+		icon := "%{F#C0392B}%{F-}"
+		fmt.Printf("%s [%s] %s", icon, t, l)
 	} else {
 		fmt.Println("")
 	}
