@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"regexp"
 	"strings"
 )
@@ -12,6 +13,11 @@ const CxxStdLib string = "NIX_CXXSTDLIB_COMPILE"
 
 func main() {
 	flags := os.Getenv(CFlags) + os.Getenv(CxxStdLib)
+
+	cmake := exec.Command("cmake", "-DCMAKE_EXPORT_COMPILE_COMMANDS=1")
+	cmake.Run()
+	fmt.Println("compile_commands.json generated.")
+	fmt.Println(".clang_complete generated.")
 
 	var fitterdList []string
 
