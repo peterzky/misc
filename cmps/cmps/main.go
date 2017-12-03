@@ -6,6 +6,8 @@ import (
 
 	"fmt"
 
+	"encoding/json"
+
 	"github.com/gorilla/mux"
 	"github.com/peterzky/misc/cmps/lib"
 )
@@ -13,20 +15,22 @@ import (
 var TaskList []lib.Task
 
 func main() {
-	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/video/add/{url}", videoAdd)
+	router := mux.NewRouter()
+	router.HandleFunc("/video/add/", videoAdd).Methods("POST")
 	router.HandleFunc("/video/list/", videoList)
 
 	log.Fatal(http.ListenAndServe("127.0.0.1:3111", router))
 }
 
 func videoAdd(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	url := vars["url"]
-	task := lib.NewMpv(url, true)
+	add := new(lib.MpvAdd)
+	if err := json.NewDecoder(r.Body).Decode(add); err != nil {
+		log.Fatal(err)
+	}
+	task := lib.NewMpv(add.Url, true)
 	task.Start()
 	TaskList = append(TaskList, task)
-	fmt.Fprintln(w, "playing: ", url)
+	fmt.Fprintln(w, "playing: ", task.Url)
 }
 
 func videoList(w http.ResponseWriter, r *http.Request) {
@@ -38,5 +42,5 @@ func videoList(w http.ResponseWriter, r *http.Request) {
 
 		}
 	}
-	fmt.Fprintln(w, list)
+	json.NewEncoder(w).Encode(TaskList)
 }

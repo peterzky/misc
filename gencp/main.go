@@ -12,7 +12,7 @@ const CFlags string = "NIX_CFLAGS_COMPILE"
 const CxxStdLib string = "NIX_CXXSTDLIB_COMPILE"
 
 func main() {
-	flags := os.Getenv(CFlags) + os.Getenv(CxxStdLib)
+	flags := os.Getenv(CFlags) + " " + os.Getenv(CxxStdLib)
 
 	cmake := exec.Command("cmake", "-DCMAKE_EXPORT_COMPILE_COMMANDS=1")
 	cmake.Run()
