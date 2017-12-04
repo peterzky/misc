@@ -43,8 +43,6 @@ func (m Mpv) Stop() error {
 }
 
 func (m Mpv) Start() error {
-	m.Start()
-	m.cmd.Wait()
 	return m.cmd.Start()
 }
 
