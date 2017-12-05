@@ -31,6 +31,7 @@ func videoAdd(w http.ResponseWriter, r *http.Request) {
 	task.Start()
 	TaskList = append(TaskList, task)
 	fmt.Fprintln(w, "playing: ", task.Url)
+	log.Printf("[mpv] %s", task.Url)
 }
 
 func videoList(w http.ResponseWriter, r *http.Request) {
