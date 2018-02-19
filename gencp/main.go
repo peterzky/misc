@@ -8,8 +8,12 @@ import (
 	"strings"
 )
 
-func genconf(fname string, compiler string) {
-	str := includeStr(compiler)
+func genconf(fname string) {
+	var str string
+	str = includeStr("gcc")
+	if str == "" {
+		str = includeStr("clang")
+	}
 	var fitterdList []string
 
 	for _, flag := range strings.Split(str, " ") {
@@ -42,7 +46,12 @@ func genconf(fname string, compiler string) {
 func includeStr(compiler string) string {
 	cc := exec.Command(compiler, "-v", "-E", "-")
 	out, _ := cc.CombinedOutput()
-	return strings.SplitAfter(string(out), "#include <...>")[1]
+	split := strings.SplitAfter(string(out), "#include <...>")
+	if len(split) >= 2 {
+		return split[1]
+	} else {
+		return ""
+	}
 }
 
 func main() {
@@ -50,5 +59,5 @@ func main() {
 	cmake.Run()
 	fmt.Println("compile_commands.json generated.")
 	fmt.Println(".clang_complete generated.")
-	genconf(".cquery", "gcc")
+	genconf(".cquery")
 }
