@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"os"
 	"os/exec"
 
@@ -16,11 +15,11 @@ import (
 
 func Download(vp VoicePart) {
 	httpclient := &http.Client{
-		Transport: &http.Transport{
-			Proxy: func(*http.Request) (*url.URL, error) {
-				return url.Parse("http://127.0.0.1:8123")
-			},
-		},
+	// Transport: &http.Transport{
+	// 	Proxy: func(*http.Request) (*url.URL, error) {
+	// 		return url.Parse("http://127.0.0.1:8123")
+	// 	},
+	// },
 	}
 	sess, err := session.NewSession(&aws.Config{
 		Region:     aws.String("ap-northeast-1"),
