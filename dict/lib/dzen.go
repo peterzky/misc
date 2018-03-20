@@ -9,7 +9,7 @@ import (
 func Dzen(str, x, y, width string) {
 	echo := exec.Command("echo", str)
 	dzen := exec.Command("dzen2", "-w", width, "-x", x, "-y", y, "-p", "6",
-		"-fn", "Sarasa UI SC-11", "-l", "6",
+		"-fn", "Sarasa UI SC", "-l", "6",
 		"-e", "onstart=uncollapse,scrollhome;"+
 			"button1=exit;"+
 			"button3=exit;"+
