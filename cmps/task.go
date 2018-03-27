@@ -73,8 +73,8 @@ func (d Dummy) Handler() HttpHandler {
 type Tmux struct {
 	bind    string
 	method  string
-	command string
 	window  string
+	command string
 }
 
 func (t Tmux) Bind() string { return t.bind }
@@ -86,13 +86,13 @@ func (t Tmux) Handler() HttpHandler {
 		url := GetUrl(r)
 		cmd := fmt.Sprintf("%s '%s'", t.command, url)
 		tmux := exec.Command("tmux", "new-window", "-n", t.window, cmd)
-		err := tmux.Run()
+		err := tmux.Start()
 
 		if err != nil {
 			log.Println(err)
 		}
 		fmt.Fprintf(w, "downloading: ", url)
-		log.Printf("[%s] %s", t.command, url)
+		log.Printf("[%s] %s", t.window, url)
 
 	}
 }
