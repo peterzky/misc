@@ -11,6 +11,8 @@ import (
 	"io/ioutil"
 	"os"
 
+	"strings"
+
 	"github.com/peterzky/misc/tts/say"
 )
 
@@ -78,8 +80,14 @@ func main() {
 		}(vp)
 	}
 	wg.Wait()
+
+	var files []string
 	for _, vp := range voiceParts {
-		say.Play(vp)
+		files = append(files, vp.FileName)
 	}
+	cmd := fmt.Sprintf("mpg123 %s", strings.Join(files, " "))
+
+	tmux := exec.Command("tmux", "new-window", "-n", "tts", cmd)
+	tmux.Run()
 
 }

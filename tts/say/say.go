@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"os/exec"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -67,10 +66,4 @@ func Download(vp VoicePart) {
 
 	io.Copy(file, result.AudioStream)
 
-}
-
-func Play(vp VoicePart) {
-	audio := exec.Command("mpv", vp.FileName)
-	audio.Start()
-	audio.Wait()
 }
