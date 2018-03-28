@@ -34,11 +34,11 @@ type Mpv struct {
 	method string
 }
 
-func (m Mpv) Bind() string { return m.bind }
+func (m *Mpv) Bind() string { return m.bind }
 
-func (m Mpv) Method() string { return m.method }
+func (m *Mpv) Method() string { return m.method }
 
-func (m Mpv) Handler() HttpHandler {
+func (m *Mpv) Handler() HttpHandler {
 	return func(w http.ResponseWriter, r *http.Request) {
 		url := GetUrl(r)
 		mpv := exec.Command("mpv", "--ytdl-format", "mp4", url)
@@ -58,11 +58,11 @@ type Dummy struct {
 	method string
 }
 
-func (d Dummy) Bind() string { return d.bind }
+func (d *Dummy) Bind() string { return d.bind }
 
-func (d Dummy) Method() string { return d.method }
+func (d *Dummy) Method() string { return d.method }
 
-func (d Dummy) Handler() HttpHandler {
+func (d *Dummy) Handler() HttpHandler {
 	return func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "dummy reply!")
 		log.Printf("dummy received\n")
@@ -77,11 +77,11 @@ type Tmux struct {
 	command string
 }
 
-func (t Tmux) Bind() string { return t.bind }
+func (t *Tmux) Bind() string { return t.bind }
 
-func (t Tmux) Method() string { return t.method }
+func (t *Tmux) Method() string { return t.method }
 
-func (t Tmux) Handler() HttpHandler {
+func (t *Tmux) Handler() HttpHandler {
 	return func(w http.ResponseWriter, r *http.Request) {
 		url := GetUrl(r)
 		cmd := fmt.Sprintf("%s '%s'", t.command, url)

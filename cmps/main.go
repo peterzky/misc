@@ -12,9 +12,8 @@ import (
 const proxy = "http_proxy=http://127.0.0.1:8123 https_proxy=http://127.0.0.1:8123"
 
 var DefaultConfig = []Task{
-	// Mpv{"/mpv/", "POST"},
-	Tmux{"/mpv/", "POST", "mpv", fmt.Sprintf("%s mpv --ytdl-format mp4", proxy)},
-	Tmux{"/youtube-dl/", "POST", "Download", "youtube-dl"},
+	&Tmux{"/mpv/", "POST", "mpv", fmt.Sprintf("%s mpv --ytdl-format mp4", proxy)},
+	&Tmux{"/youtube-dl/", "POST", "Download", "youtube-dl"},
 }
 
 func main() {
