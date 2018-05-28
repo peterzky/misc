@@ -35,7 +35,7 @@ func genconf(fname string) {
 
 	defer file.Close()
 
-	file.WriteString("%clang\n%c -std=gnu11\n %cpp -std=gnu++14\n\n")
+	file.WriteString("%clang\n%c -std=gnu11\n%cpp -std=gnu++14\n\n")
 
 	for _, flag := range fitterdList {
 		str := fmt.Sprintf("-I%s\n", flag)
