@@ -6,20 +6,21 @@ import (
 	"net/http"
 	"os"
 
+	"golang.org/x/net/proxy"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/polly"
 )
 
+const PROXY_ADDR = "127.0.0.1:1080"
+
 func Download(vp VoicePart) {
-	httpclient := &http.Client{
-	// Transport: &http.Transport{
-	// 	Proxy: func(*http.Request) (*url.URL, error) {
-	// 		return url.Parse("http://127.0.0.1:8123")
-	// 	},
-	// },
-	}
+	dialer, _ := proxy.SOCKS5("tcp", PROXY_ADDR, nil, proxy.Direct)
+	httpTransport := &http.Transport{}
+	httpclient := &http.Client{Transport: httpTransport}
+	httpTransport.Dial = dialer.Dial
 	sess, err := session.NewSession(&aws.Config{
 		Region:     aws.String("ap-northeast-1"),
 		HTTPClient: httpclient,
